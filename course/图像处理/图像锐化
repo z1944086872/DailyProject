@@ -1,0 +1,94 @@
+# 实验4 图像锐化
+### 一、实验目的
+1、掌握一阶锐化算法的工作原理和算法实现。
+2、掌握二阶锐化算法的工作原理和算法实现。
+### 二、实验内容
+##### 1实现拉普拉斯锐化。测试图像：’Grayblur6.png’。
+（备注：将执行正确的代码粘贴在此处，核心代码要求有注释）
+
+```
+function [ ] = Laplacian(im )
+% im=imread('im/Grayblur6.png');
+% Laplacian(im )
+imshow(im);title('原始图像');
+im0=im;
+im=double(im);
+
+
+
+H=[0 -1 0; -1 4 -1;0 -1 0];
+im1=filter2(H,im);
+
+im2=uint8(im1+im);
+figure;imshow(im2);title('Laplacian锐化叠加图像');
+
+im_L0=uint8(im1);
+figure;imshow(im_L0);title('Laplacian锐化图像');
+
+end
+```
+
+##### 2实现Sobel微分算子的代码。测试图像：’Grayblur6.png’。
+（备注：将执行正确的代码粘贴在此处，核心代码要求有注释）
+
+```
+function [ ] = Sobel( im )
+% im=imread('im/Grayblur6.png');
+% Sobel(im )
+imshow(im);title('Ô­Ê¼Í¼Ïñ');
+im=double(im);
+ 
+H=[-1 0 1;-2 0 2;-1 0 1];
+Dy=filter2(H,im);
+ 
+H=[-1 -2 -1;0 0 0;1 2 1];
+Dx=filter2(H,im);
+ 
+im2=uint8(im+sqrt(Dx.^2+Dy.^2)*0.1);
+figure;imshow(im2);title('SobelÈñ»¯µþ¼ÓÍ¼Ïñ');
+ 
+im_L0=uint8(sqrt(Dx.^2+Dy.^2));
+figure;imshow(im_L0);title('SobelÈñ»¯Í¼Ïñ');
+ 
+ 
+end
+ 
+```
+
+
+##### 3实现交叉微分算法（Roberts算法）。测试图像：’Grayblur6.png’。
+ 
+
+（备注：将执行正确的代码粘贴在此处，核心代码要求有注释）
+
+```
+function [ ] = Roberts( Im0 )
+% im=imread('im/Grayblur6.png');
+% Roberts(im )
+[m0,n0,c]=size(Im0);
+imshow(Im0);title('原始图像');
+if c==3
+    Im0=rgb2gray(Im0);
+end
+Im=zeros(m0,n0);
+Im0=double(Im0);
+
+for i=2:m0-1
+    for j=2:n0-1
+        Im(i,j)=abs(Im0(i+1,j+1)-Im0(i,j))+abs(Im0(i+1,j)-Im0(i,j+1));
+    end
+end
+im2=uint8(Im0+Im);
+figure;imshow(im2);title('Roberts锐化叠加图像');
+
+im_L0=uint8(Im);
+figure;imshow(im_L0);title('Roberts锐化图像');   
+
+
+end
+```
+
+
+
+
+
